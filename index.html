@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Surprise</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #FF5A5F, #008F95);
+            overflow: hidden;
+            color: #333;
+        }
+
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'), linear-gradient(to top, #FF5A5F, #FFB6C1);
+            clip-path: ellipse(70% 60% at 50% 100%);
+        }
+
+        .heart {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            width: 200px;
+            height: 180px;
+            background-color: #FFD700;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            z-index: -1;
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 180px;
+            background-color: #FFD700;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -100px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 100px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            text-align: center;
+            border: 2px solid #FFD700;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-family: 'Art Deco W01', sans-serif;
+            color: #004D61;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #FFD700;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #004D61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #008F95;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .final-message {
+            font-size: 22px;
+            color: #FF5A5F;
+            margin-top: 20px;
+            font-family: 'Art Deco W01', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="wave"></div>
+        <div class="heart"></div>
+    </div>
+    <div class="container">
+        <h1>Jeu de Surprise</h1>
+        <div id="step1">
+            <p>Indice 1 : Quel est l'endroit où l'on déguste de délicieux plats ?</p>
+            <input type="text" id="answer1" placeholder="Votre réponse ici">
+            <button onclick="checkAnswer1()">Soumettre</button>
+        </div>
+        <div id="step2" class="hidden">
+            <p>Indice 2 : Ce lieu est situé dans un endroit qui porte le nom d'un saint. Lequel ?</p>
+            <input type="text" id="answer2" placeholder="Votre réponse ici">
+            <button onclick="checkAnswer2()">Soumettre</button>
+        </div>
+        <div id="step3" class="hidden">
+            <p>Indice 3 : Le nom de ce lieu combine la tradition et la modernité. Quel est-il ?</p>
+            <input type="text" id="answer3" placeholder="Votre réponse ici">
+            <button onclick="checkAnswer3()">Soumettre</button>
+        </div>
+        <div id="final" class="hidden">
+            <p class="final-message">Félicitations Mathilde ! Tu as découvert notre destination ce soir :<br> Le Bistro de St Benoît.<br> Hâte de passer cette soirée magique avec toi. <br> Je t'aime ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer1() {
+            const answer = document.getElementById("answer1").value.toLowerCase();
+            if (answer.includes("restaurant") || answer.includes("bistro")) {
+                document.getElementById("step1").classList.add("hidden");
+                document.getElementById("step2").classList.remove("hidden");
+            } else {
+                alert("Ce n'est pas la bonne réponse, essaie encore !");
+            }
+        }
+
+        function checkAnswer2() {
+            const answer = document.getElementById("answer2").value.toLowerCase();
+            const acceptedAnswers = ["benoît", "benoit", "saint benoît", "saint benoit", "st benoît", "st benoit"];
+            if (acceptedAnswers.some(correctAnswer => answer.includes(correctAnswer))) {
+                document.getElementById("step2").classList.add("hidden");
+                document.getElementById("step3").classList.remove("hidden");
+            } else {
+                alert("Ce n'est pas la bonne réponse, essaie encore !");
+            }
+        }
+
+        function checkAnswer3() {
+            const answer = document.getElementById("answer3").value.toLowerCase();
+            const acceptedAnswers = ["bistro de saint benoît", "bistro de st benoît", "bistro de saint benoit", "bistro de st benoit"];
+            if (acceptedAnswers.some(correctAnswer => answer.includes(correctAnswer))) {
+                document.getElementById("step3").classList.add("hidden");
+                document.getElementById("final").classList.remove("hidden");
+            } else {
+                alert("Ce n'est pas la bonne réponse, essaie encore !");
+            }
+        }
+    </script>
+</body>
+</html>
